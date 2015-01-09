@@ -1,2 +1,2 @@
 # massappraisal
-Mass appraisal Node
+Mass appraisal Node.  Provides tools for doing multiple regression.
