@@ -117,12 +117,16 @@ function verifyFiles()
 	$.getJSON(url, function(data) {
 			var alert='success';
 			$("#fileName").html("");
+			//href="/load" class="btn btn-default btn-continue" id="continueBtn"
+			if(data['file'])
+				$("#continueBtn").prop("href","/load?type="+data['file']+(data["Geometry"]?"&stype="+data["Geometry"]:""));
 			if(data['Extent']||data['Layer name'])
 			{
 				var message="<h3>Successfully uploaded files:</h3><b>Layer name:</b> " + data["Layer name"] 
 				+ (data["Extent"]? "<br><b>Extent:</b> " + data["Extent"]:"")
 				+ "<br><b>Count:</b> " + data["Feature Count"]
-				+ "<br><b>Type:</b> "  + data["Geometry"];
+				+ "<br><b>File type:</b> " + data['file']
+				+ "<br><b>Geometry type:</b> "  + data["Geometry"];
 
 				$('<div class="alert alert-' + alert + '"/>')
 				.html(message).appendTo('#fileupload');

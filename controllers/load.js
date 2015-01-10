@@ -22,7 +22,9 @@ router.get('/',  function(req, res){
 	//if(!req.query){
 		res.render('load', {
 			user : req.user,
-			tableName: req.query.tableName
+			tableName: req.query.tableName,
+			type:req.query.type||'',
+			stype:req.query.stype||''
 		});
 		return;
 	//}
@@ -127,7 +129,7 @@ router.get('/:fileName',  function(req, res){
 			   	//'alter table '+tableName+' rename column ogc_fid to _fid',
 			   	'update '+tableName+' set _acres_total=ST_Area(wkb_geometry)/4046.86',
 			   	"delete from "+req.user.shortName+".tables where name='"+baseTableName+"'",
-			   	,"insert into "+req.user.shortName+".tables(name,geometrytype,date_loaded) values('"+baseTableName+"','Multipolygon',NOW())",
+			   	,"insert into "+req.user.shortName+".tables(name,geometrytype,filetype,date_loaded) values('"+baseTableName+"','"+(req.query.stype?req.query.stype.replace(/\W/g, ''):"Multipolygon")+"','" + (req.query.type?req.query.type.replace(/\W/g, '').replace(/ESRI/g,"ESRI "):"Unknown") + "',NOW())",
 			   	"select column_name FROM information_schema.columns WHERE table_name='"+baseTableName+"' and table_schema='"+req.user.shortName+"'"
 		      ];
 		  /*

@@ -20,7 +20,7 @@ router.get('/',  function(req, res){
 });
 
 router.get('/:fileName',  function(req, res){
-	console.log(req.params.tableName);
+	//console.log(req.params.tableName);
 
 	if(!req.user.shortName)
 	{
@@ -57,8 +57,12 @@ router.get('/:fileName',  function(req, res){
 	 
 	 ogr.info(function (er, data) {
 	   if (er) console.error(er)
-	   console.log(data)
+	   //console.log(data)
 	   console.log(data["Layer name"]);
+	   try{
+		   data['file']=data['file'].split("'")[1].split("`")[1];
+	   }catch(e){}
+	   
 	   if(data.Geometry=='None'){
 		   if(/^win/.test(process.platform))
 			   process.env['GDAL_DATA'] = 'C:\\PostgreSQL93\\gdal-data';
@@ -113,7 +117,7 @@ function convertCSV2Numeric(shortName,tableName,msg,res,isCSV)
 		  		//add the schema to the tablename
 					tableName = shortName+"."+ tableName;
 				  var cols=[];
-				  console.log(result.rows);
+				  //console.log(result.rows);
 				  for(var i in result.rows){
 				  	if(result.rows[i].column_name.charAt(0) == result.rows[i].column_name.charAt(0).toUpperCase())
 				  		result.rows[i].column_name='"' + result.rows[i].column_name + '"';
@@ -146,7 +150,7 @@ function convertCSV2Numeric(shortName,tableName,msg,res,isCSV)
 					//remove the non-numeric fields that don't have all unique values
 					,"delete from "+ tableName + "_vars where include=2 and uniqueid=0"
 					,"delete from "+shortName+".tables where name='"+baseTableName+"'"
-					,"insert into "+shortName+".tables(name,geometrytype,date_loaded) values('"+baseTableName+"','None',NOW())"
+					,"insert into "+shortName+".tables(name,geometrytype,filetype,date_loaded) values('"+baseTableName+"','None','"+msg['file']+"',NOW())"
 				  ,'select count(*) as count from '+tableName+'_stats'];
 				  
 				  //,'drop table if exists ' + tableName + '_vars'	  			

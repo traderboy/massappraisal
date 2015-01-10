@@ -63,6 +63,7 @@ $(document).ready(function() {
 
 							lastStep=data.step;
 							var url = baseURL + "?step="+data.step+(idName?"&idName="+idName:"");
+							if(data.step==3)url+=(filetype?"&type="+filetype:"")+(spatialtype?"&stype="+spatialtype:"");
 
 							startStepPulse(data.step);
 
