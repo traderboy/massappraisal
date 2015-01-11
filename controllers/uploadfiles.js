@@ -61,6 +61,7 @@ router.get('/:fileName',  function(req, res){
 	   console.log(data["Layer name"]);
 	   try{
 		   data['file']=data['file'].split("'")[1].split("`")[1];
+		   data['file'].replace(/Open/,"ESRI ");
 	   }catch(e){}
 	   
 	   if(data.Geometry=='None'){
