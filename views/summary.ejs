@@ -80,7 +80,7 @@ sessionStorage.setItem("tablename", "<%= tableName %>");
   			<i class="glyphicon glyphicon-globe"></i>
   			Show on map</a>
 		</div>
-		
+        		
 		</div>
 		<!-- 
         <button type="submit" class="btn btn-primary start" id="downloadBtn">
@@ -88,8 +88,16 @@ sessionStorage.setItem("tablename", "<%= tableName %>");
             <a id='downloadLink' target=_blank href='#'><span class='btn-primary'>Download</span></a>
         </button>
     -->
+		<br><br>
+		<div>
+		
+        Before continuing, you need to specify which field is the dependent variable.  Usually this will be the sales price.  A new field "oid" is added that is guaranteed to be unique, but you may wish to specify a different field as your unique identifier.  This unique identifier is used when printing out the residuals.
+        <br>
+        Check the boxes next to the numeric fields you wish to include in the regression analysis.
+        </div>
 
     </div>
+    
     <div class='col-lg-2'>
         <a href="/uploadfiles" class="btn btn-default btn-continue" id="previousBtn"><i class="glyphicon glyphicon-arrow-left"></i> Return to file upload </a>
     </div>

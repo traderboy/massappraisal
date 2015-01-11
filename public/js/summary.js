@@ -49,26 +49,29 @@ $(document).ready(function() {
 	url="/summary/"+tableName;
 	var dlUrl="/summary/download/"+tableName;
 	$("#downloadLink").prop("href", dlUrl)
-	$('#summaryTable').bootstrapTable("showLoading");
+	//$('#summaryTable').bootstrapTable("showLoading");
 
 	$.getJSON(url,function(data){
 		names=data.names;
 		$('#summaryTable').bootstrapTable({
-		    data:data.rows
+			data:data.rows
 		});
 		$('#summaryTable').on('check.bs.table', function (e, row) {
-		    console.log('Event: check.bs.table, data: ' + JSON.stringify(row));
-		    update('include',row.include?1:0,row.name);
+			console.log('Event: check.bs.table, data: ' + JSON.stringify(row));
+			update('include',row.include?1:0,row.name);
 		}).on('uncheck.bs.table', function (e, row) {
-		    console.log('Event: uncheck.bs.table, data: ' + JSON.stringify(row));
-		    update('include',row.include?1:0,row.name);
+			console.log('Event: uncheck.bs.table, data: ' + JSON.stringify(row));
+			update('include',row.include?1:0,row.name);
 		}).on('check-all.bs.table', function (e) {
-		    console.log('Event: check-all.bs.table');
-		    update('include',1,'all');
+			console.log('Event: check-all.bs.table');
+			update('include',1,'all');
 		}).on('uncheck-all.bs.table', function (e) {
-		    console.log('Event: uncheck-all.bs.table');
-		    update('include',0,'all');
-		}).on('load-success.bs.table', function (e) {
+			console.log('Event: uncheck-all.bs.table');
+			update('include',0,'all');
+
+		});
+		/*
+		 * .on('load-success.bs.table', function (e) {
 		    console.log('Event: load-success.bs.table');
 				$("input[name='id']").on("change",function(e){
 						 var name=$(e.target).parent().siblings("td").eq(2).html();
@@ -81,13 +84,23 @@ $(document).ready(function() {
 					   update('depvar',1,name);
 				});    
 		});
-		
+		*/
+		$("input[name='id']").on("change",function(e){
+			var name=$(e.target).parent().siblings("td").eq(2).html();
+			console.log('Event: id radio, data: ' + name);
+			update('id',1,name);
+		});
+		$("input[name='depvar']").on("change",function(e){
+			var name=$(e.target).parent().siblings("td").eq(2).html();
+			console.log('Event: depvar radio, data: ' + name);
+			update('depvar',1,name);
+		});    
 		if(data.geomtype!=""&&data.geomtype!="None")
 		{
 			console.log("Show map");
 			$("#mapBtn").show().find("a").prop("href","/map?tableName="+tableName);
 		}
-		
+
 	});
 	
 });
