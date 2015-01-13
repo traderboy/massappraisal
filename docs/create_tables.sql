@@ -41,6 +41,28 @@ GRANT EXECUTE ON FUNCTION  public.r_table_cor(in fieldnames text,in tablename te
 GRANT EXECUTE ON FUNCTION  public.r_table_regression_summary(in fieldnames text,in tablename text)   TO dbuser;
 GRANT EXECUTE ON FUNCTION  public.isdouble(text)  TO dbuser;
 
+CREATE TABLE users
+(
+  id uuid NOT NULL,
+  username text NOT NULL,
+  password text NOT NULL,
+  CONSTRAINT users_pkey PRIMARY KEY (id)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE users
+  OWNER TO postgres;
+
+-- Index: users_username_password
+
+-- DROP INDEX users_username_password;
+
+CREATE INDEX users_username_password
+  ON users
+  USING btree
+  (username COLLATE pg_catalog."default", password COLLATE pg_catalog."default");
+
 
 
 --Create a new user

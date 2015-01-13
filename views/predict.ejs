@@ -35,6 +35,7 @@ a.flt-right{float:right}
 p.name{float:right}
 table.summaryTable{height:60px}
 #statsTable{font-size:small;}
+#predictTable{display:none;}
 /*
 .fixed-table-header{display:none !important}
 .fixed-table-container{height:auto !important;}
@@ -42,6 +43,7 @@ table.summaryTable{height:60px}
 li.disabled{color:gray}
 .jumbotron{padding-top:18px !important;padding-bottom:18px !important;}
 #addBtn{float:right}
+#summaryTable{display:none}
 </style>
 <script>
 <% if(tableName){ %>
@@ -154,7 +156,7 @@ sessionStorage.setItem("tablename", "<%= tableName %>");
     <div id="progress" class="progress">
         <div class="progress-bar progress-bar-success"></div>
     </div>
-    
+    <!--<div id='loader'><img src="img/spinner_mac.gif"> Loading table.....  Please wait</div>-->
 	<table data-height="400" data-url="" data-cache="false" id="summaryTable" data-side-pagination="client" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]">
 
 	    <thead>
@@ -192,6 +194,7 @@ sessionStorage.setItem("tablename", "<%= tableName %>");
 
 	<div>
 	<h4>Use the form below to calculate a single prediction.</h4>
+		<div id='loader'><img src="img/spinner_mac.gif"> Loading table.....  Please wait</div>
 		<form id="predictFrm">
 
       

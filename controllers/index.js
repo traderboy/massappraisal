@@ -119,6 +119,7 @@ router.get('/login', function(req, res) {
 		res.redirect('/');
 	}
 	else {
+		console.log("Not authenticated")
 		res.render('login', {
 			user : req.user
 		});
@@ -127,8 +128,11 @@ router.get('/login', function(req, res) {
 
 });
 router.get('/logout', function(req, res) {
+	//order below may be important
+	res.clearCookie('connect.sid');
+	req.session.destroy();
 	req.logout();
-	res.redirect('/');
+	res.redirect('/login');
 	/*
 	res.render('login', {
 		user : req.user

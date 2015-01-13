@@ -45,7 +45,8 @@ function getData(url){
 		//columns[0]['checkbox']="true";
 		//columns[1]['formatter']=correlateFormatter;
 		columns[2]['cellStyle']=correlateFormatter;
-		$('#summaryTable').bootstrapTable({
+		$("#loader").hide();
+		$('#summaryTable').show().bootstrapTable({
 		                //method: 'get',
 		                //url: 'data2.json',
 		                cache: false,

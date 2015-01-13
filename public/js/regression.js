@@ -25,8 +25,8 @@ $.getJSON(url,function(data){
 	{
 		$("#plotimg").prop("src","data:image/gif;base64,"+data.plot);
 	}
-
-	$('#summaryTable').bootstrapTable({
+	$("#loader").hide();
+	$('#summaryTable').show().bootstrapTable({
 	                cache: false,
 	                data:data.coef,
 	                height: 300,

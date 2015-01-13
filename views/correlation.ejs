@@ -32,7 +32,7 @@ cellpadding:10;
 cellspacing:20;
 }
 table.clrs td {border:1px solid #ddd;padding:5px;}
-
+#summaryTable{display:none}
 </style>
 <script>
 <% if(tableName){ %>
@@ -119,8 +119,9 @@ Note:  Correlation does not prove “cause and effect”.  Correlation can be sp
     
 	<br>
     <br>
+    <div id='loader'><img src="img/spinner_mac.gif"> Loading table.....  Please wait</div>
 	<table data-height="299" data-cache="false" id="summaryTable">
-		<th><img src="img/spinner_mac.gif"> Loading table.....  Please wait</th>
+		
 	</table>
 
     <br>

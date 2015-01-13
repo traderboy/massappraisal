@@ -67,8 +67,8 @@ $.getJSON(url+"/variables"+(nosw?"?nosw=1":""),function(data){
 	//columns[columns.length-1]['formatter']=priceFormatter;
 	
 	//var names=data.replace("~","+").split("+");
-	
-	$('#summaryTable').bootstrapTable({
+	$("#loader").hide();
+	$('#summaryTable').show().bootstrapTable({
 	                cache: false,
 	                url:url+"?total="+data.total+(nosw?"&nosw=1":""),
 	                //data:data.rows,

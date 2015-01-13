@@ -5,15 +5,70 @@ res.redirect('/?redirect=/user');
 }
 */
 var express = require('express');
+var pg=require("pg");
 var router = express.Router();
+
+router.use(function(req, res, next) {
+	if (!req.isAuthenticated()) { 
+		console.log("redirecting");
+		res.redirect('/login');
+		return; 
+	}
+
+	next();
+});
 
 router.get('/', function(req, res){
 	  console.log(req.user.shortName);
 	  //console.log(req.user.emails[0].value);
-	  res.end("respond with a resource");
+	  if(req.user.shortName!='reaisincva'){
+		  res.end("Unauthorized user");
+		  return;
+	  }
+	  createUser(req.query.username.replace(/\W/g, ''));
 	  
 });
 
+function createUser(username){
+
+	var sql=["CREATE SCHEMA "+username+" AUTHORIZATION postgres",
+	         "GRANT ALL ON SCHEMA "+username+" TO postgres",
+	         "GRANT ALL ON SCHEMA "+username+" TO dbuser",
+	         "GRANT SELECT ON ALL TABLES IN SCHEMA "+username+" TO dbuser",
+	         "GRANT SELECT ON ALL SEQUENCES IN SCHEMA "+username+" TO dbuser",
+	         "GRANT SELECT,INSERT,DELETE ON SCHEMA "+username+" TO dbuser",
+	         "CREATE TABLE "+username+".tables( id serial NOT NULL, name character varying(200), geometrytype character varying(50), filetype character varying(50),  date_loaded timestamp without time zone	)	WITH (	  OIDS=FALSE	)",
+	         "ALTER TABLE "+username+".tables OWNER TO postgres",
+	         "GRANT ALL ON TABLE "+username+".tables TO postgres",
+	         "GRANT SELECT,INSERT, DELETE ON TABLE "+username+".tables TO dbuser",
+	         "GRANT SELECT,INSERT, DELETE ON "+username+".tables TO dbuser",
+	         "GRANT SELECT,USAGE,UPDATE ON "+username+".tables_id_seq TO dbuser",
+	         "GRANT ALL ON SCHEMA "+username+" TO dbuser",
+	         "select count(*) as cnt from "+username+".tables"];
+	pg.connect(global.adminConString,function(err, client, release) {
+		if (err){ res.end(JSON.stringify({"err":"No connection to database;"}));throw err;}
+		//strip off extension
+		client.query(sql.join(";"), function(err, result) {
+
+			if(err)console.log(err);
+			if(result.rows&&result.rows.length&&result.rows[0].cnt==0){
+
+				sql="insert into public.users(username,password) values($1,$2)";
+				var vals=[username,'validated'];
+				client.query(sql,vals, function(err, result) {
+					release();
+					res.end("User " + username + " successfully created.")
+				});
+			}
+			else{
+				release();
+				res.end("Unable to create user " + username + ".")
+			}
+
+		});
+	});
+
+}
 module.exports = router;
 /*
  * GET users listing.

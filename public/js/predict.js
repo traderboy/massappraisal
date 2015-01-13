@@ -81,7 +81,8 @@ function fetchRegressionVariables(url){
 		dummyvals.push(obj);
 
 		//$('#summaryTable').html(str);
-		$('#predictTable').bootstrapTable({
+		$("#loader").hide();
+		$('#predictTable').show().bootstrapTable({
 			cache: false,
 			data:dummyvals,
 			//data:data.coef,
@@ -233,8 +234,8 @@ function printTable(file) {
 		for(var i in data[0]){
 			if(data[0][i]!=null)columns.push({field:i,title:data[0][i],align:"right",formatter:$.isNumeric(data[1][i])?numberFormatter:undefined});
 		}
-
-		$('#summaryTable').bootstrapTable({
+		//$("#loader").hide();
+		$('#summaryTable').show().bootstrapTable({
 			cache: false,
 			columns:columns,
 			data:data.slice(1)

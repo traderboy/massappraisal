@@ -25,6 +25,7 @@ table.summaryTable{height:60px}
 #statsTable{font-size:small;}
 .jumbotron{padding-top:18px !important;padding-bottom:18px !important;}
 li.disabled{color:gray}
+#summaryTable{display:none}
 </style>
 <script>
 <% if(tableName){ %>
@@ -111,8 +112,8 @@ sessionStorage.setItem("tablename", "<%= tableName %>");
     
 	<br>
     <br>
+    <div id='loader'><img src="img/spinner_mac.gif"> Loading table.....  Please wait</div>
 	<table data-height="400" data-url="" data-cache="false" id="summaryTable" data-side-pagination="server" data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]">
-<th><img src="img/spinner_mac.gif"> Loading table.....  Please wait</th>
 	    <thead>
 	        <tr>
 	        </tr>

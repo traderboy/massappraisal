@@ -1,5 +1,8 @@
 #!/bin/env node
 global.conString = "postgres://adminwrhjewj:I2JGjbKe1ENG@localhost/massappraisal";
+global.adminConString = "postgres://adminwrhjewj:I2JGjbKe1ENG@localhost/massappraisal";
+global.hostString = "http://massappraisal-reais.rhcloud.com";
+
 //git push ssh://54b1c9de5973ca47ad000163@massappraisal-reais.rhcloud.com/~/git/massappraisal.git/ master
 /**
  * Module dependencies.

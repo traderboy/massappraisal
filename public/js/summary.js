@@ -53,7 +53,8 @@ $(document).ready(function() {
 
 	$.getJSON(url,function(data){
 		names=data.names;
-		$('#summaryTable').bootstrapTable({
+		$("#loader").hide();
+		$('#summaryTable').show().bootstrapTable({
 			data:data.rows
 		});
 		$('#summaryTable').on('check.bs.table', function (e, row) {

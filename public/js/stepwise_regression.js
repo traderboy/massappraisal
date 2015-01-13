@@ -27,8 +27,8 @@ $.getJSON(url,function(data){
 	//var names=data.call.replace("~","+").split("+");
 	//for(var i=0;i<names.length;i++)
 	//	data.coef[i]['name']=names[i].trim();
-
-	$('#summaryTable').bootstrapTable({
+	$("#loader").hide();
+	$('#summaryTable').show().bootstrapTable({
 	                cache: false,
 	                data:data.coef,
 	                height: 300,

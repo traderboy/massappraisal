@@ -14,6 +14,8 @@ ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFE
 
 //global.conString = "postgres://postgres:postgres@localhost/soils";
 global.conString = "postgres://dbuser:dbuser@localhost/soils";
+global.adminConString = "postgres://postgres:postgres@localhost/soils";
+global.hostString = "http://127.0.0.1:8888";
 
 //Simple route middleware to ensure user is authenticated.
 //Use this route middleware on any resource that needs to be protected.  If
