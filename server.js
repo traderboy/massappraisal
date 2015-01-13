@@ -1,7 +1,6 @@
 #!/bin/env node
-global.conString = "postgres://dbuser:dbuser@localhost/soils";
-
-
+global.conString = "postgres://adminwrhjewj:I2JGjbKe1ENG@localhost/massappraisal";
+//git push ssh://54b1c9de5973ca47ad000163@massappraisal-reais.rhcloud.com/~/git/massappraisal.git/ master
 /**
  * Module dependencies.
  */
@@ -17,7 +16,7 @@ var express = require('express')
 
 var app = express();
 //all environments
-app.set('port', process.env.PORT || 8888);
+//app.set('port', process.env.PORT || 8888);
 app.use(bodyParser.urlencoded({ extended: false }))    // parse application/x-www-form-urlencoded
 app.use(bodyParser.json())    //
 
