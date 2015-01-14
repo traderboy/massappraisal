@@ -53,6 +53,8 @@ WITH (
 );
 ALTER TABLE users
   OWNER TO postgres;
+GRANT ALL ON TABLE users TO postgres;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE users TO dbuser;
 
 -- Index: users_username_password
 

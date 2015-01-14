@@ -57,8 +57,9 @@ router.use('/map', require('./map'))
 router.use('/user', require('./user'))
 router.use('/auth', require('./login'))
 
-router.use('/mapcache', require('./mapcache'))
-router.use('/mapserv', require('./mapserv'))
+//enable when needed
+//router.use('/mapcache', require('./mapcache'))
+//router.use('/mapserv', require('./mapserv'))
 
 router.head('/', function(req,res){
 	res.end("");

@@ -84,7 +84,7 @@ router.get('/:fileName',  function(req, res){
 	  .format('PostgreSQL') 
       .options(opts)//
       .skipfailures()  
-	  .destination('PG:host=localhost user=dbuser dbname=soils password=dbuser active_schema='+req.user.shortName) 	
+	  .destination(global.ogrConnString + ' active_schema='+req.user.shortName) 	
 	  .exec(function (er, data) {
 		console.log("Done");
 	    if (er) console.error(er)

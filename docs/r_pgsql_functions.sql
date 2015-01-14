@@ -1,3 +1,25 @@
+--Packages used:
+--install.packages('psych')
+--install.packages('usdm')
+--install.packages('RJSONIO')
+--install.packages('RGtk2')
+--install.packages('cairoDevice')
+--install.packages('RCurl')
+
+-note: have to make dbuser a superuser to set the
+alter user dbuser with superuser;
+ALTER ROLE dbuser SET search_path TO reaisincva,public;
+ALTER ROLE dbuser SET dynamic_library_path TO '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib:$libdir';
+
+
+CREATE FUNCTION plr_call_handler()
+RETURNS LANGUAGE_HANDLER
+AS '$libdir/plr' LANGUAGE C;
+
+CREATE LANGUAGE plr HANDLER plr_call_handler;
+   
+
+
 --PG Functions converting character fields to numeric (int or double)
 
 CREATE OR REPLACE FUNCTION public.isdouble(text) RETURNS BOOLEAN AS $$

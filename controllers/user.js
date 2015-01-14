@@ -45,6 +45,7 @@ function createUser(username){
 	         "GRANT SELECT,USAGE,UPDATE ON "+username+".tables_id_seq TO dbuser",
 	         "GRANT ALL ON SCHEMA "+username+" TO dbuser",
 	         "select count(*) as cnt from "+username+".tables"];
+
 	pg.connect(global.adminConString,function(err, client, release) {
 		if (err){ res.end(JSON.stringify({"err":"No connection to database;"}));throw err;}
 		//strip off extension

@@ -5,6 +5,8 @@ http://openshift.github.io/documentation/oo_cartridge_guide.html#nodejs
 
 rhc scp  massappraisal upload plr.zip app-root/data
 
+#Merge local git with openshift
+git push ssh://54b1c9de5973ca47ad000163@massappraisal-reais.rhcloud.com/~/git/massappraisal.git/ master
 
 http://arvelmhale.blogspot.com/2015/01/compiling-mapcache-node-mapserv-node.html
 http://arvelmhale.blogspot.com/2015/01/installing-r-statistical-software-in.html
@@ -26,7 +28,6 @@ tar zvfz R-3.1.2.tar.gz
 cd R-3.1.2
 
 ./configure --enable-R-shlib --prefix=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data
-
 make
 make install DESTDIR=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data
 
@@ -50,10 +51,13 @@ js010/root/usr/bin:/opt/rh/postgresql92/root/usr/bin:/bin:/usr/bin:/usr/sbin:/va
 
 rhc env set LD_LIBRARY_PATH=/opt/rh/postgresql92/root/usr/lib64:/opt/rh/nodejs010/root/usr/lib64:/opt/rh/v8314/root/usr/lib64:/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib -a massappraisal
 
+import os, sys
+sys.path.append('/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/gyp/lib/python2.6/site-packages/')
+import gyp
 
-rhc env set PYTHONPATH=/var/lib/openshift/54510e5ce0b8cd182600047b/app-root/data/gyp/lib/python2.6/site-packages/ -a massappraisal
-
+rhc env set PYTHONPATH=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/gyp/lib/python2.6/site-packages/ -a massappraisal
 rhc env set R_HOME=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2 -a massappraisal
+--rhc env set GDAL_DATA=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2 -a massappraisal
 
 rhc app restart -a massappraisal
 
@@ -69,6 +73,9 @@ set dynamic_library_path = '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root
 
 set dynamic_library_path = '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib:/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2/lib/:$libdir';
 set dynamic_library_path = '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib:$libdir';
+
+ALTER ROLE dbuser SET search_path TO reaisincva,public;
+ALTER ROLE dbuser SET dynamic_library_path TO '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib:$libdir';
 
 #upload/download
 
