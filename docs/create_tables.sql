@@ -43,7 +43,7 @@ GRANT EXECUTE ON FUNCTION  public.isdouble(text)  TO dbuser;
 
 CREATE TABLE users
 (
-  id uuid NOT NULL,
+  id serial,
   username text NOT NULL,
   password text NOT NULL,
   CONSTRAINT users_pkey PRIMARY KEY (id)

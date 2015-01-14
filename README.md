@@ -42,3 +42,49 @@ export R_HOME=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2
 ./configure --prefix=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data
 USE_PGXS=1 make
 USE_PGXS=1 make install DESTDIR=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data
+
+rhc env set PATH=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/runtime/repo/node_modules/.bin:/var/lib/openshift/54b1c9de5973ca47ad000163//.node_modules/.bin:/opt/rh/node
+js010/root/usr/bin:/opt/rh/postgresql92/root/usr/bin:/bin:/usr/bin:/usr/sbin:/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2/bin -a massappraisal
+
+-rhc env set LD_LIBRARY_PATH=/opt/rh/postgresql92/root/usr/lib64:/opt/rh/nodejs010/root/usr/lib64:/opt/rh/v8314/root/usr/lib64:/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2/lib:/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/opt/rh/postgresql92/root/usr/lib64/pgsql/ -a massappraisal
+
+rhc env set LD_LIBRARY_PATH=/opt/rh/postgresql92/root/usr/lib64:/opt/rh/nodejs010/root/usr/lib64:/opt/rh/v8314/root/usr/lib64:/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib -a massappraisal
+
+
+rhc env set PYTHONPATH=/var/lib/openshift/54510e5ce0b8cd182600047b/app-root/data/gyp/lib/python2.6/site-packages/ -a massappraisal
+
+rhc env set R_HOME=/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2 -a massappraisal
+
+rhc app restart -a massappraisal
+
+
+ln -s /var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2/lib/libR.so 
+psql -f /var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/opt/rh/postgresql92/root/usr/share/pgsql/extension/plr.sql
+
+
+ls /var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/opt/rh/postgresql92/root/usr/lib64/pgsql/plr.so
+
+set dynamic_library_path = '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2/lib/:/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/opt/rh/postgresql92/root/usr/lib64/pgsql/:$libdir';
+
+
+set dynamic_library_path = '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib:/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/R-3.1.2/lib/:$libdir';
+set dynamic_library_path = '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib:$libdir';
+
+#upload/download
+
+rhc scp tileserver download ./ /var/lib/openshift/54510e5ce0b8cd182600047b/app-root/repo/node_modules/node-mapserv.zip
+rhc scp tileserver download ./ /var/lib/openshift/54510e5ce0b8cd182600047b/app-root/data/lib/*
+
+rhc scp massappraisal upload C:\enide\ws\openshift\lib.zip /var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/
+rhc scp massappraisal upload  C:\enide\ws\openshift\node-mapserv.zip /var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/
+
+
+rhc scp massappraisal download ./ /var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib.zip
+rhc scp massappraisal download ./ /tmp/R.zip
+
+rhc scp tileserver upload C:\enide\ws\openshift\lib.zip /var/lib/openshift/54510e5ce0b8cd182600047b/app-root/data/
+rhc scp tileserver upload C:\enide\ws\openshift\R.zip /var/lib/openshift/54510e5ce0b8cd182600047b/app-root/data/
+rhc env set LD_LIBRARY_PATH=/opt/rh/postgresql92/root/usr/lib64:/opt/rh/nodejs010/root/usr/lib64:/opt/rh/v8314/root/usr/lib64:/var/lib/openshift/54510e5ce0b8cd182600047b/app-root/data/lib -a tileserver
+
+
+

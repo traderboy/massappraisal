@@ -1,4 +1,4 @@
-PG Functions converting character fields to numeric (int or double)
+--PG Functions converting character fields to numeric (int or double)
 
 CREATE OR REPLACE FUNCTION public.isdouble(text) RETURNS BOOLEAN AS $$
 DECLARE x DOUBLE PRECISION;
@@ -48,7 +48,7 @@ GRANT EXECUTE ON FUNCTION tonumeric(text, text) TO dbuser;
 
 
 ------------------------------------------------------------------------------
-Production functions
+--Production functions
 ------------------------------------------------------------------------------
 -- Function: r_table_summary(text, text)
 
