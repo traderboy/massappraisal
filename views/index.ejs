@@ -132,6 +132,7 @@ p.name{float:right}
 		<br><br>
 		<% if (files && files.length>0) { %>
 		<table class="table">
+		<caption><h4>Comparable sales</h4></caption>
                 <tr>
                     <th>Filename</th>
                     <th>Type</th>
@@ -140,7 +141,7 @@ p.name{float:right}
                     <th>&nbsp;</th>
                     <th>&nbsp;</th>
                 </tr>                               
-                <% for(var i = 0;i < files.length;i++) { %>                 
+                <% for(var i = 0;i < files.length;i++) { if(files[i].type==1)continue;%>                 
                 <tr>
                     <td><%= files[i].name %></td>
                     <td><%= files[i].filetype %></td>
@@ -155,6 +156,47 @@ p.name{float:right}
               <% } %>
     </table>
     <% } %>          
+<br><br>
+
+    <div class='col-lg-10'>
+    
+    </div>
+    <div class='col-lg-2'>
+
+    <div id="startSubBtn">
+       <a href="/uploadsubfiles" class="btn btn-default btn-continue" id="continueSubBtn"> Add new data <i class="glyphicon glyphicon-arrow-right"></i></a>
+    </div>
+    </div>
+		<br><br>
+		<% if (files && files.length>0) { %>
+		<table class="table">
+		<caption><h4>Subject properties</h4></caption>
+                <tr>
+                    <th>Filename</th>
+                    <th>Comparable table</th>
+                    <th>Type</th>
+                    <th style="width:40%">Date loaded</th>
+                    
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>                               
+                <% for(var i = 0;i < files.length;i++) { if(files[i].type==0)continue; %>                 
+                <tr>
+                    <td><%= files[i].name %></td>
+                    <td><%= files[i].comps %></td>
+                    <td><%= files[i].filetype %></td>
+                    <td><%= files[i].date %></td>
+                    <td>
+                    <a href="/subject?tableName=<%= files[i].name %>" role="button" class="btn btn-primary"><i class="glyphicon glyphicon-stats"></i> View</a>
+          					</td>
+                    <td>
+                    <a href="/delete?tableName=<%= files[i].name %>" role="button" class="btn btn-danger delete"><i class="glyphicon glyphicon-trash"></i> Delete</a>
+          					</td>
+                </tr>
+              <% } %>
+    	</table>
+    <% } %>          
+
 <% } %>    
 	
  

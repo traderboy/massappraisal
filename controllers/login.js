@@ -63,52 +63,61 @@ passport.deserializeUser(function(obj, done) {
 //credentials (in this case, an accessToken, refreshToken, and Google
 //profile), and invoke a callback with a user object.
 passport.use(new GoogleStrategy({
-	 clientID: GOOGLE_CLIENT_ID,
-	 clientSecret: GOOGLE_CLIENT_SECRET,
-	 callbackURL: global.hostString + "/auth/google/callback"
-	},
-	function(accessToken, refreshToken, params, profile, done) {
-	 // asynchronous verification, for effect...
-		var openIdId = jwt.decode(params.id_token, null, true).openid_id;
-		var oAuthId = profile.id;
-		profile.shortName = profile.emails[0].value.split("@")[0];
-		console.log("User's shortName: " + profile.shortName);
-	
-		//req.session.user = profile.displayName;
-	
-		//console.log(profile);
-		var sql = "select 1 as valid from users where username=$1";
-		var vals=[profile.shortName];
-		 pg.connect(global.conString,function(err, client, release) {
-			  if (err){ res.end(JSON.stringify({"err":"No connection to database;"}));throw err;}
-			  //strip off extension
-			  client.query(sql, vals, function(err, result) {
-				  	release();
-			  		if(err)console.log(err);
-			  		//res.end("success");
-			  			
-			  		if(result.rows && result.rows[0].valid==1)
-			  		{
-			  		 process.nextTick(function () {
-			  			
-			  		   // To keep the example simple, the user's Google profile is returned to
-			  		   // represent the logged-in user.  In a typical application, you would want
-			  		   // to associate the Google account with a user record in your database,
-			  		   // and return that user instead.
-			  		   return done(null, profile);
-			  		 });
-			  		}
-			  		else
-			  		{
-			  			
-			  		}
-			  		
-			  		//res.end(JSON.stringify(result.rows));		
-			  });
-			});
-	
-	
-	}
+	clientID: GOOGLE_CLIENT_ID,
+	clientSecret: GOOGLE_CLIENT_SECRET,
+	callbackURL: global.hostString + "/auth/google/callback"
+},
+function(accessToken, refreshToken, params, profile, done) {
+	// asynchronous verification, for effect...
+	var openIdId = jwt.decode(params.id_token, null, true).openid_id;
+	var oAuthId = profile.id;
+	profile.shortName = profile.emails[0].value.split("@")[0];
+	console.log("User's shortName: " + profile.shortName);
+
+	//req.session.user = profile.displayName;
+
+	//console.log(profile);
+	var sql = "select 1 as valid from users where username=$1";
+	var vals=[profile.shortName];
+	pg.connect(global.conString,function(err, client, release) {
+		if (err){ res.end(JSON.stringify({"err":"No connection to database;"}));throw err;}
+		//strip off extension
+		client.query(sql, vals, function(err, result) {
+			release();
+			if(err)console.log(err);
+			//res.end("success");
+
+			if(result.rows && result.rows.length>0 && result.rows[0].valid==1)
+			{
+				process.nextTick(function () {
+
+					// To keep the example simple, the user's Google profile is returned to
+					// represent the logged-in user.  In a typical application, you would want
+					// to associate the Google account with a user record in your database,
+					// and return that user instead.
+					return done(null, profile);
+				});
+			}
+			else
+			{
+				process.nextTick(function () {
+
+					// To keep the example simple, the user's Google profile is returned to
+					// represent the logged-in user.  In a typical application, you would want
+					// to associate the Google account with a user record in your database,
+					// and return that user instead.
+					profile.notvalidated=true;
+					return done(null, profile);
+				});
+
+			}
+
+			//res.end(JSON.stringify(result.rows));		
+		});
+	});
+
+
+}
 ));
 
 
@@ -120,7 +129,7 @@ passport.use(new GoogleStrategy({
 // will redirect the user back to this application at /auth/google/callback
 router.get('/google', passport.authenticate('google', {
 	scope : [ 'https://www.googleapis.com/auth/userinfo.profile',
-			'https://www.googleapis.com/auth/userinfo.email' ]
+	          'https://www.googleapis.com/auth/userinfo.email' ]
 }), function(req, res) {
 	console.log("auth/google");
 	// The request will be redirected to Google for authentication, so this
@@ -136,18 +145,22 @@ router.get('/google/callback', passport.authenticate('google', {
 
 	failureRedirect : '/login'
 }), function(req, res) {
+	if(req.user&&req.user.notvalidated){
+		res.end("Not validated");
+		return;
+	}
 	console.log("Authenticated");
 	//console.log(req.user);
 	//res.redirect('/ma/one.html');
 	//if(req.query.redirect)
 	//	res.redirect(req.query.redirect);
 	//else
-		res.redirect('/');
+	res.redirect('/');
 	/*
 	res.render('upload', {
 		user : req.user
 	});
-	*/
+	 */
 
 
 });

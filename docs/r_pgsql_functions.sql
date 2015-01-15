@@ -12,11 +12,15 @@ ALTER ROLE dbuser SET search_path TO reaisincva,public;
 ALTER ROLE dbuser SET dynamic_library_path TO '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib:$libdir';
 
 
-CREATE FUNCTION plr_call_handler()
+CREATE OR REPLACE FUNCTION plr_call_handler()
 RETURNS LANGUAGE_HANDLER
-AS '$libdir/plr' LANGUAGE C;
+AS '/plr' LANGUAGE C;
 
-CREATE LANGUAGE plr HANDLER plr_call_handler;
+CREATE OR REPLACE FUNCTION plr_call_handler()
+RETURNS LANGUAGE_HANDLER
+AS '/var/lib/openshift/54b1c9de5973ca47ad000163/app-root/data/lib/plr' LANGUAGE C;
+
+CREATE OR REPLACE LANGUAGE plr HANDLER plr_call_handler;
    
 
 

@@ -20,7 +20,7 @@ router.get('/',  function(req, res){
 	console.log(req.query);
 	//return;
 	//if(!req.query){
-		res.render('load', {
+		res.render('loadsubject', {
 			user : req.user,
 			tableName: req.query.tableName,
 			type:req.query.type||'',

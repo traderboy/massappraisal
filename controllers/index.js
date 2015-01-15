@@ -40,7 +40,7 @@ router.use(function(req, res, next) {
   }
 });
 
-
+//comparables
 router.use('/upload', require('./upload'))
 router.use('/uploadfiles', require('./uploadfiles'))
 router.use('/load', require('./load'))
@@ -53,6 +53,11 @@ router.use('/stepwise_regression', require('./stepwise_regression'))
 router.use('/residuals', require('./residuals'))
 router.use('/predict', require('./predict'))
 router.use('/map', require('./map'))
+
+//subject
+router.use('/uploadsubfiles', require('./uploadsubfiles'))
+router.use('/loadsubject', require('./loadsubject'))
+router.use('/subject', require('./subject'))
 
 router.use('/user', require('./user'))
 router.use('/auth', require('./login'))
@@ -167,7 +172,7 @@ function getUserFiles(req,res)
 	pg.connect(global.conString,function(err, client, release) {
 		if (err){ res.end(JSON.stringify({"err":"No connection to database;"}));throw err;}
 		//var sql="SELECT table_name FROM information_schema.tables WHERE table_schema = '"+req.user.shortName+"' and table_name not like '%_stats' and table_name not like '%_soils' and table_name not like '%_vars'";
-		var sql="select name,case when filetype IS NULL then 'Unknown' else filetype end,to_char(date_loaded, 'Month DD, YYYY') as date  from "+req.user.shortName + ".tables";
+		var sql="select id,name,type,comp,case when filetype IS NULL then 'Unknown' else filetype end,to_char(date_loaded, 'Month DD, YYYY') as date  from "+req.user.shortName + ".tables";
 		 
 		console.log(sql);
 		client.query(sql, function(err, result) {
