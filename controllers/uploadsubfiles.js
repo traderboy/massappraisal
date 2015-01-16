@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var ogr2ogr = require("ogr2ogr");
-
+var pg = require("pg");
 
 router.use(function(req, res, next) {
 	if (!req.isAuthenticated()) { 
@@ -15,7 +15,27 @@ router.use(function(req, res, next) {
 
 router.get('/',  function(req, res){
 	res.render('uploadsubfiles', {
-			user : req.user
+			user : req.user,
+			ws: req.query.ws
+	});
+});
+
+router.get('/comparables',  function(req, res){
+	//console.log(req.params.tableName);
+	if(!req.user.shortName)
+	{
+		req.user.shortName = req.user.emails[0].value;
+	}
+	var sql="select name from "+req.user.shortName+".tables where type=0";
+	console.log(sql);
+	pg.connect(global.conString,function(err, client, release) {
+		  if (err){ res.end(JSON.stringify({"err":"No connection to database;"}));throw err;}
+		  //strip off extension
+		  client.query(sql, function(err, result) {
+		  		//add the schema to the tablename
+			  release();
+			  res.end(JSON.stringify(result.rows));
+		  });
 	});
 });
 
@@ -105,7 +125,7 @@ router.get('/:fileName',  function(req, res){
 
 function convertCSV2Numeric(shortName,tableName,msg,res,isCSV)
 {
-   var pg = require("pg");
+
    
 	
 	var baseTableName=tableName;
